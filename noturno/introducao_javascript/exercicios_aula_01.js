@@ -5,17 +5,15 @@
 console.log("=== Exercício 1: arrow function ===");
 
 // Crie uma arrow function que devolva base * altura.
-const areaRetangulo = (base, altura) => {
-    // TODO
-};
+const areaRetangulo = (base, altura) => base*altura;
 
 console.log("Esperado: 20 | Obtido:", areaRetangulo(5, 4));
 
 console.log("\n=== Exercício 2: filter ===");
 
 function filtrarNomesLongos(nomes) {
-    // Devolva somente os nomes com mais de 5 caracteres.
-    // TODO
+    return nomes.filter((nome) => nome.length > 5);
+    
 }
 
 const nomes = ["Fernanda", "Ana", "Beatriz", "Carlos", "Davi"];
@@ -27,9 +25,8 @@ console.log(
 console.log("\n=== Exercício 3: map ===");
 
 function formatarValores(valores) {
-    // Produza strings no formato "O valor é: X".
-    // TODO
-}
+    return valores.map((valor) => `O valor é: ${valor}`);
+    }
 
 console.log(
     'Esperado: ["O valor é: 10", "O valor é: 20", "O valor é: 30"] | Obtido:',
@@ -39,26 +36,24 @@ console.log(
 console.log("\n=== Exercício 4: reduce ===");
 
 function encontrarMaior(valores) {
-    // Use reduce para devolver o maior valor.
-    // TODO
+    return valores.reduce(
+        (maior,valor) => (valor > maior? valor : maior)
+    );
 }
 
 console.log("Esperado: 89 | Obtido:", encontrarMaior([12, 45, 7, 89, 23]));
 
 console.log("\n=== Exercício 5: return em arrow function ===");
 
-const calcular = (x) => {
-    // Corrija a função para devolver x * 3 + 1.
-    x * 3 + 1;
-};
+const calcular = (x) => x * 3 + 1;
 
 console.log("Esperado: 13 | Obtido:", calcular(4));
 
 console.log("\n=== Exercício 6: função de alta ordem ===");
 
 function executarDuasVezes(funcao) {
-    // Chame a função recebida duas vezes.
-    // TODO
+    funcao();
+    funcao();
 }
 
 let quantidadeDeChamadas = 0;
@@ -68,8 +63,9 @@ console.log("Esperado: 2 | Obtido:", quantidadeDeChamadas);
 console.log("\n=== Exercício 7: closure ===");
 
 function criarMultiplicador(fator) {
-    // Devolva uma função que receba um número e multiplique pelo fator.
-    // TODO
+    return function(numero) {
+        return numero * fator;
+    }
 }
 
 const vezesQuatro = criarMultiplicador(4);
