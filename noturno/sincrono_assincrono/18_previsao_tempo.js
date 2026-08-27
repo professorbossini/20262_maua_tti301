@@ -1,8 +1,8 @@
 const axios = require('axios');
 
-const appid = "sua_chave_de_API"; // Substitua pela sua chave de API do OpenWeatherMap
+const appid = "sua_chave_de_API"; // substitua pela sua chave de API do OpenWeatherMap
 
-const q = "Itu";
+const q = "Itu"; // q="S%C3%A3o%20Paulo"
 
 const units = 'metric';
 
@@ -12,42 +12,35 @@ const cnt = "10";
 
 const url = `https://api.openweathermap.org/data/2.5/forecast?q=${q}&appid=${appid}&units=${units}&lang=${lang}&cnt=${cnt}`;
 
-
-// axios.get(url)
+// axios
+//     .get(url)
 //     .then((res) => {
-//         console.log(res);
-//         return res.data.list;
-//     }).then((lista) => {
-//         for (let previsao of lista) {
+// //        console.log(res.data.list);
+//         for (let previsao of res.data.list) {
 //             console.log(`
 //                 ${new Date(previsao.dt * 1000).toLocaleString()},
 //                 ${'Min: ' + previsao.main.temp_min}\u00B0C,
 //                 ${'Max: ' + previsao.main.temp_max}\u00B0C,
 //                 ${'Hum: ' + previsao.main.humidity} %,
-//                 ${'Desc: ' + previsao.weather[0].description} 
+//                 ${'Desc: ' + previsao.weather[0].description}
 //             `);
 //         }
 //     });
 
 
-
-
 axios
     .get(url)
     .then((res) => {
-        console.log(res);
+//        console.log(res);
         return res.data;
     })
-    .then((res) => {
-        console.log(res.cnt);
-        return res;
+    .then((item1) => {
+        console.log(item1.cnt);
+        return item1.list;
     })
-    .then((res) => {
-        console.log('Recebendo os valores do campo cnt');
-        return res['list'];
-    })
-    .then((res) => {
-            for (let previsao of res) {
+    .then((lista) => {
+//        console.log(lista);
+        for (let previsao of lista) {
             console.log(`
                 ${new Date(previsao.dt * 1000).toLocaleString()},
                 ${'Min: ' + previsao.main.temp_min}\u00B0C,
@@ -56,10 +49,9 @@ axios
                 ${'Desc: ' + previsao.weather[0].description}
             `);
         }
-        return res;
+        return lista;
     })
-    .then((res) => {
-        const listaAcima30 = res.filter(r => r.main.feels_like > 30);
-        console.log(`${listaAcima30.length} dias com sensação térmica acima de 30\u00B0C`);
+    .then((lista) => {
+        const listaFiltrada = lista.filter((previsao) => previsao.main.feels_like > 22);
+        console.log(`${listaFiltrada.length} previsões têm percepção humana de temperatura acima de 22 graus`);
     });
-
