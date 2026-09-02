@@ -1,0 +1,19 @@
+{
+  "name": "tti301-aula-04-microsservicos",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Primeiro microsserviço HTTP da turma noturna de TTI301 - recorte até validação.",
+  "main": "lembretes/05_validacao_e_status.js",
+  "scripts": {
+    "script1": "node lembretes/01_servidor_minimo.js",
+    "script2": "node lembretes/02_get_lembretes.js",
+    "script3": "node lembretes/03_post_lembretes.js",
+    "script4": "node lembretes/04_get_lembrete_por_id.js",
+    "script5": "node lembretes/05_validacao_e_status.js",
+    "start": "node lembretes/05_validacao_e_status.js",
+    "exercicios": "node exercicios_aula_04.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
