@@ -1,0 +1,28 @@
+{
+  "name": "tti301-aula-05-microsservicos",
+  "version": "1.3.0",
+  "private": true,
+  "description": "Serviços de lembretes e observações, n + 1, comunicação síncrona e introdução a eventos.",
+  "main": "lembretes/11_lembretes_com_observacoes_sincrono.js",
+  "scripts": {
+    "script1": "node lembretes/01_servidor_minimo.js",
+    "script2": "node lembretes/02_get_lembretes.js",
+    "script3": "node lembretes/03_post_lembretes.js",
+    "script4": "node lembretes/04_get_lembrete_por_id.js",
+    "script5": "node lembretes/05_validacao_e_status.js",
+    "script6": "node lembretes/06_lembretes_para_integracao.js",
+    "script7": "node observacoes/07_servidor_observacoes_minimo.js",
+    "script8": "node observacoes/08_post_e_get_observacoes.js",
+    "script9": "node clientes/09_cliente_n_mais_1.js",
+    "script10": "node observacoes/10_observacoes_consulta_em_lote.js",
+    "script11": "node lembretes/11_lembretes_com_observacoes_sincrono.js",
+    "script12": "node barramento/12_barramento_recebe_eventos.js",
+    "exercicios4": "node exercicios_aula_04.js",
+    "exercicios5": "node exercicios_aula_05.js",
+    "start": "node lembretes/06_lembretes_para_integracao.js"
+  },
+  "dependencies": {
+    "axios": "^1.20.0",
+    "express": "^5.2.1"
+  }
+}
