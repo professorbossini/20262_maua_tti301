@@ -1,0 +1,30 @@
+{
+  "name": "tti301-aula06-eventos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Barramento, consulta, classificação e recuperação de eventos - TTI301",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "script13": "node 13_barramento_tres_destinos.js",
+    "script14": "node 14_lembretes_emite_eventos.js",
+    "script15": "node 15_observacoes_emite_eventos.js",
+    "script16": "node 16_consulta_por_eventos.js",
+    "script17": "node 17_classificacao.js",
+    "script18": "node 18_observacoes_atualiza_status.js",
+    "script19": "node 19_barramento_quatro_destinos.js",
+    "script21": "node 21_consulta_com_replay.js",
+    "script22": "node 22_experimento_ordem_e_repeticao.js",
+    "exercicios5": "node exercicios_aula_05.js",
+    "exercicios6": "node exercicios_aula_06.js",
+    "verificar": "node ferramentas/verificar.js",
+    "test": "node --test testes/dominio.test.js",
+    "ensaio": "node testes/ensaio_http.js"
+  },
+  "dependencies": {
+    "axios": "1.20.0",
+    "express": "5.2.1"
+  }
+}
