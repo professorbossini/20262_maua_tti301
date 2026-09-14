@@ -1,3 +1,4 @@
+const axios = require('axios')
 const express = require('express')
 const app = express()
 
@@ -12,12 +13,18 @@ app.get('/lembretes', (req, res) => {
 })
 
 //POST /lembretes
-app.post('/lembretes', (req, res) => {
+app.post('/lembretes', async (req, res) => {
   contador++;
   const texto = req.body;
   lembretes[contador] = {
     contador, texto
   }
+  await axios.post('http://localhost:10000/eventos', {
+    tipo: 'LembreteCriado',
+    dados: {
+      contador, texto
+    }
+  })
   res.status(201).send(lembretes[contador]);
 })
 
