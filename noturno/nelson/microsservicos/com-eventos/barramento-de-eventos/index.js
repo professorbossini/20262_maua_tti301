@@ -24,6 +24,12 @@ app.post('/eventos', (req, res) => {
     // Dispara uma requisição POST assíncrona enviando o evento para o microsserviço de Observações (porta 5000)
     axios.post('http://localhost:5000/eventos', evento);
 
+    //envia o evento para o microsserviço de consulta
+    axios.post("http://localhost:6000/eventos", evento);
+
+    //envia o evento para o microsservico de classificacao
+    axios.post("http://localhost:7000/eventos", evento);
+
     // Responde imediatamente para quem publicou o evento confirmando o recebimento com status HTTP 200 (OK)
     res.status(200).send({ msg: "ok" });
 });
