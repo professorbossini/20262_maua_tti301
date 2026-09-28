@@ -6,6 +6,7 @@ app.use(express.json())
 app.post('/eventos', async (req, res) => {
   //pegar o evento do corpo da requisição
   const evento = req.body
+  console.log(evento)
   //enviar o evento para o mss de lembretes POST /eventos
   try{
     await axios.post('http://localhost:4000/eventos', evento) //resulta em promise
@@ -26,4 +27,4 @@ app.post('/eventos', async (req, res) => {
 
 
 const port = 10000
-app.listen(port, () => {console.log('Barramento de eventos. Porta ${port}.')})
+app.listen(port, () => {console.log(`Barramento de eventos. Porta ${port}.`)})

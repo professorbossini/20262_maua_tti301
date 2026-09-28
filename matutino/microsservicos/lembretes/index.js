@@ -15,7 +15,7 @@ app.get('/lembretes', (req, res) => {
 //POST /lembretes
 app.post('/lembretes', async (req, res) => {
   contador++;
-  const texto = req.body;
+  const { texto } = req.body
   lembretes[contador] = {
     contador, texto
   }
@@ -26,6 +26,12 @@ app.post('/lembretes', async (req, res) => {
     }
   })
   res.status(201).send(lembretes[contador]);
+})
+
+app.post("/eventos", (req, res) => {
+  const evento = req.body
+  console.log(evento)
+  res.end()
 })
 
 const port = 4000

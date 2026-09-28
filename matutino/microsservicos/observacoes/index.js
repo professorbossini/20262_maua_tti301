@@ -25,7 +25,13 @@ app.post('/lembretes/:id/observacoes', async (req, res) => {
 
 app.get('/lembretes/:id/observacoes', (req, res) => {
     res.send(observacoesPorLembreteId[req.params.id] || []);
-});
+})
+
+app.post('/eventos', (req, res) => {
+    const evento = req.body
+    console.log(evento)
+    res.end()
+})
 
 app.listen(5000, (() => {
     console.log('Lembretes. Porta 5000');
