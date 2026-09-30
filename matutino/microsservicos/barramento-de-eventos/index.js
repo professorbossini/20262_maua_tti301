@@ -21,6 +21,25 @@ app.post('/eventos', async (req, res) => {
   catch(e){
     console.log(e)
   } 
+
+  try{
+    //enviar o evento para o mss de consultas POST /eventos
+    await axios.post('http://localhost:6000/eventos', evento)
+  }
+  catch(e){
+    console.log(e)
+  } 
+
+  try{
+    //enviar o evento para o mss de consultas POST /eventos
+    await axios.post('http://localhost:7000/eventos', evento)
+  }
+  catch(e){
+    console.log(e)
+  } 
+  
+
+
   //responder com um 200 OK ao terminar
   res.status(200).json({mensagem: 'ok'})
 })
