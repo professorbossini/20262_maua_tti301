@@ -61,6 +61,10 @@ app.get("/lembretes/:id", (req, res) => {
     res.status(200).send(lembrete);
 });
 
+app.post("/eventos", (req, res) => {
+    console.log("Evento recebido por lembretes:", req.body);
+    res.status(200).send({ msg: "ok" });
+});
 
 
 app.listen(PORTA, () => {
