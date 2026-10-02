@@ -1,0 +1,59 @@
+{
+  "disciplina": "TTI301",
+  "data_aula": "2026-10-02",
+  "versao": "1.0",
+  "snapshot_zip": "20262_maua_tti301-main.zip",
+  "commit_snapshot": "29622331d71c03d1aac164f875709b63f2bf7d2a",
+  "arquivos": [
+    {
+      "copia": "scripts/01_lembretes.js",
+      "origem": "noturno/microsservicos/lembretes/06_inclusao_notificando_barramento.js",
+      "linhas_originais": 72,
+      "sha256_origem": "f84db1ccee4cbd9deabd0fb8eb00f751cacb75ff9c07433add2e521c9daa2a29",
+      "bytes_originais": 1757,
+      "rodape_acrescentado": true,
+      "referencia_apostila": "4.3.29 e 4.3.33; pp. impressas 38-39 e 42 (PDF 42-43 e 46)."
+    },
+    {
+      "copia": "scripts/02_barramento.js",
+      "origem": "noturno/microsservicos/barramento-de-eventos/index.js",
+      "linhas_originais": 30,
+      "sha256_origem": "15e81e7ce8d9cbc388f95b3b3c4d0f6781508a5bb598a2512bedfc85fc51e277",
+      "bytes_originais": 735,
+      "rodape_acrescentado": true,
+      "referencia_apostila": "4.3.28, 4.3.38, 4.3.43 e 4.3.50; pp. impressas 36-38, 47, 55-56 e 66-67 (PDF 40-42, 51, 59-60 e 70-71)."
+    },
+    {
+      "copia": "scripts/03_observacoes.js",
+      "origem": "noturno/microsservicos/observacoes/index.js",
+      "linhas_originais": 65,
+      "sha256_origem": "ffc76b7c8c059b0109810b587c74ead5c827efab0dd0aaccda6f4dc4424e201a",
+      "bytes_originais": 1868,
+      "rodape_acrescentado": true,
+      "referencia_apostila": "4.3.31, 4.3.42, 4.3.45 e 4.3.47; pp. impressas 40-41, 54-55 e 57-60 (PDF 44-45, 58-59 e 61-64)."
+    },
+    {
+      "copia": "scripts/04_classificacao_original.js",
+      "origem": "noturno/microsservicos/classificacao/index.js",
+      "linhas_originais": 31,
+      "sha256_origem": "9c773b86ed938ede84d04aa3abe22dd4d045c8e627e21bba45897ec53feab2bb",
+      "bytes_originais": 741,
+      "rodape_acrescentado": true,
+      "referencia_apostila": "4.3.41-4.3.44 e 4.3.47; pp. impressas 52-57 e 59-60 (PDF 56-61 e 63-64)."
+    },
+    {
+      "copia": "scripts/05_consulta.js",
+      "origem": "noturno/microsservicos/consulta/index.js",
+      "linhas_originais": 52,
+      "sha256_origem": "679d1a1fac67b60b3824bc7f5b9496abc1a7875fd961aa3f4ea334dd8637a9a9",
+      "bytes_originais": 1426,
+      "rodape_acrescentado": true,
+      "referencia_apostila": "4.3.35-4.3.38, 4.3.46-4.3.47 e 4.3.51; pp. impressas 43-47, 58-60 e 67-68 (PDF 47-51, 62-64 e 71-72)."
+    }
+  ],
+  "proposta": {
+    "arquivo": "scripts/04b_classificacao_importacao_proposta.js",
+    "mudanca": "Uma importação de axios após a linha 1; comentários de identificação.",
+    "status": "Proposta didática separada; não aplicada à main."
+  }
+}
