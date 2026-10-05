@@ -3,9 +3,12 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 
+const eventos = []
+
 app.post('/eventos', async (req, res) => {
   //pegar o evento do corpo da requisição
   const evento = req.body
+  eventos.push(evento)
   console.log(evento)
   //enviar o evento para o mss de lembretes POST /eventos
   try{
@@ -44,6 +47,10 @@ app.post('/eventos', async (req, res) => {
   res.status(200).json({mensagem: 'ok'})
 })
 
+//fazer o endpoint que viabiliza o passo 7 da figura
+app.get('/eventos', (req, res) => {
+  res.json(eventos)
+})
 
 const port = 10000
 app.listen(port, () => {console.log(`Barramento de eventos. Porta ${port}.`)})
