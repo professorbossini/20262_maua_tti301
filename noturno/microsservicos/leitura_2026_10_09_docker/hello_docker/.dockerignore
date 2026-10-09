@@ -1,0 +1,9 @@
+# TTI301 — 09/10/2026 — Exclusões do contexto de construção.
+# Bossini: seção 4.3.58, pp. 83–84 (PDF 87–88).
+# Extensão didática: além de node_modules, excluir metadados e segredos locais.
+node_modules
+.git
+.DS_Store
+npm-debug.log*
+.env
+.env.*

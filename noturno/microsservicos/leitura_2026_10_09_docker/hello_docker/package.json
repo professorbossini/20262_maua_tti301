@@ -1,0 +1,14 @@
+{
+  "name": "tti301-hello-docker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Exemplo de leitura baseado no Hello Docker da apostila Bossini.",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "5.2.1"
+  }
+}
