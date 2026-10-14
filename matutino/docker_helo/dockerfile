@@ -1,0 +1,22 @@
+#comentários são feitos com #
+#desde que # seja o primeiro símbolo na linha
+#essa linguagem não é case sensitive
+#mas é boa prática usar maiúsculas para diferenciar comandos
+# e argumentos
+#queremos uma imagem com o node versão 14
+FROM node:20
+
+# um diretório no sistema de arquivos do contêiner para os
+# comandos a seguir
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 5200
+
+CMD ["node", "index.js"]
+
