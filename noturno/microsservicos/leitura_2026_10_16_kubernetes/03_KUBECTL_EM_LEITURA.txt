@@ -1,0 +1,33 @@
+# TTI301 — 16/10/2026 — Hello, Kubernetes: leitura de comandos.
+# Bossini: 4.3.68.1–4.3.68.4, PDF 96–98 / rodapé 92–94.
+# Arquivo de texto para análise. Não é um roteiro de execução na aula.
+# Premissas: cluster existente, cliente configurado, acesso à API e permissões.
+
+# 4.3.68.1 — Consultar a versão do cliente e a do servidor.
+kubectl version
+
+# Complemento da documentação oficial: somente a versão do cliente.
+kubectl version --client
+
+# 4.3.68.2 — Consultar os nós registrados no cluster.
+kubectl get nodes
+
+# 4.3.68.3 — Exibir ajuda geral e ajuda específica.
+kubectl
+kubectl get nodes --help
+
+# 4.3.68.4 — Solicitar a criação de um Deployment para a imagem da apostila.
+kubectl create deployment meu-primeiro-deployment --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+
+# 4.3.68.4 — Consultar os Deployments no namespace selecionado pelo contexto.
+kubectl get deployments
+
+# Leitura do comando de criação:
+# kubectl = cliente da API de gerenciamento; create = ação de criação.
+# deployment = tipo de objeto; meu-primeiro-deployment = nome escolhido.
+# --image = referência à imagem que será usada pelos contêineres.
+# gcr.io = registro; google-samples/kubernetes-bootcamp = caminho; v1 = tag.
+# A imagem acima é a do exemplo de Bossini, não a imagem dos nossos lembretes.
+# Disponibilidade do registro, acesso e compatibilidade não foram testados.
+# Um comando create é imperativo; o objeto criado mantém estado desejado gerenciado.
+# Este comando não constrói um Dockerfile nem expõe automaticamente a aplicação fora do cluster.

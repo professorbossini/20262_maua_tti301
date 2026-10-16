@@ -1,0 +1,44 @@
+TTI301 — 16/10/2026 — Quadros para leitura
+Base: Bossini 4.3.68.1–4.3.68.4, PDF 96–98 / rodapé 92–94.
+TODOS os quadros abaixo são hipotéticos; não são saídas coletadas de um cluster.
+Nomes, tempos e versões foram simplificados. A ordem e o tempo reais podem variar.
+
+QUADRO A — CONSULTA DOS NÓS
+Premissas: API acessível, permissão de consulta e um nó apto registrado.
+Uma representação simplificada de kubectl get nodes seria:
+NAME       STATUS   ROLES    AGE   VERSION
+no-aula    Ready    <none>   1h    <versao-do-cluster>
+Ready refere-se à condição do nó; não diz que o serviço de lembretes está correto.
+ROLES pode variar entre distribuições e configurações locais.
+O nó não é um Pod, e a quantidade de linhas não é a quantidade de contêineres.
+
+QUADRO B — ACEITE DA CRIAÇÃO
+Premissas: nome disponível, permissão de criação e pedido aceito pela API.
+Uma mensagem compatível seria:
+deployment.apps/meu-primeiro-deployment created
+O objeto foi criado. A mensagem não confirma que a imagem já foi obtida.
+Também não confirma que um Pod está pronto nem que a aplicação está acessível externamente.
+
+QUADRO C — INSTÂNCIA CRIADA, AINDA NÃO PRONTA
+Premissas: uma réplica desejada, um Pod do modelo atual criado, porém ainda não pronto.
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+meu-primeiro-deployment     0/1     1            0           5s
+READY 0/1: zero réplicas prontas, de uma desejada.
+UP-TO-DATE 1: uma réplica corresponde ao modelo atual do Deployment.
+AVAILABLE 0: nenhuma réplica é considerada disponível segundo os critérios do Deployment.
+Esses números não identificam sozinhos a causa da espera.
+
+QUADRO D — CONVERGÊNCIA NO CENÁRIO BEM-SUCEDIDO
+Premissas: imagem obtida, recursos e rede adequados, processo iniciado e condições atendidas.
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+meu-primeiro-deployment     1/1     1            1           40s
+READY 1/1 indica uma réplica pronta de uma desejada.
+AVAILABLE 1 não valida classificação, persistência ou comunicação de cinco microsserviços.
+Não há garantia de que o quadro C se tornará D em quarenta segundos.
+
+QUADRO E — INTERPRETAÇÕES QUE NÃO SÃO EQUIVALENTES
+Cliente instalado não significa cluster instalado e acessível.
+Nó Ready não significa aplicação pronta.
+Deployment created não significa Pod pronto.
+Pod pronto não significa aplicação publicada para acesso externo.
+Instância recriada não significa dados em memória recuperados.

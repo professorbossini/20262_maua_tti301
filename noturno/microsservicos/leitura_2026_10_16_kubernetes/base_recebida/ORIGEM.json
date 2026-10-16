@@ -1,0 +1,13 @@
+{
+  "snapshot": "dfabfc49ff1c253ac172af670f3218833f2d5735",
+  "arquivos": {
+    "base_recebida/lembretes/Dockerfile": {
+      "origem": "noturno/microsservicos/lembretes/Dockerfile",
+      "sha256": "2edd85e1a113e640a68799274e8cc0b0eb370312341b32436d1484689a652553"
+    },
+    "base_recebida/lembretes/06_inclusao_notificando_barramento.js": {
+      "origem": "noturno/microsservicos/lembretes/06_inclusao_notificando_barramento.js",
+      "sha256": "f84db1ccee4cbd9deabd0fb8eb00f751cacb75ff9c07433add2e521c9daa2a29"
+    }
+  }
+}
