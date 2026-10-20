@@ -13,26 +13,42 @@ const app = express();
 // Configura o servidor para aceitar e interpretar requisições com formato JSON
 app.use(bodyParser.json());
 
+const eventos = []
+
 // Define a rota POST '/eventos' responsável por receber um evento e repassá-lo para os demais microsserviços
 app.post('/eventos', (req, res) => {
-    // Extrai o objeto do evento recebido no corpo da requisição
+
     const evento = req.body;
 
-    // Dispara uma requisição POST assíncrona enviando o evento para o microsserviço de Lembretes (porta 4000)
-    axios.post('http://localhost:4000/eventos', evento);
+    eventos.push(evento);
 
-    // Dispara uma requisição POST assíncrona enviando o evento para o microsserviço de Observações (porta 5000)
-    axios.post('http://localhost:5000/eventos', evento);
+    axios.post('http://localhost:4000/eventos', evento)
+        .catch(err => {
+            console.log("Serviço Lembretes indisponível");
+        });
 
-    //envia o evento para o microsserviço de consulta
-    axios.post("http://localhost:6000/eventos", evento);
+    axios.post('http://localhost:5000/eventos', evento)
+        .catch(err => {
+            console.log("Serviço Observações indisponível");
+        });
 
-    //envia o evento para o microsservico de classificacao
-    axios.post("http://localhost:7000/eventos", evento);
+    axios.post('http://localhost:6000/eventos', evento)
+        .catch(err => {
+            console.log("Serviço Consultas indisponível");
+        });
 
-    // Responde imediatamente para quem publicou o evento confirmando o recebimento com status HTTP 200 (OK)
+    axios.post('http://localhost:7000/eventos', evento)
+        .catch(err => {
+            console.log("Serviço Classificação indisponível");
+        });
+
     res.status(200).send({ msg: "ok" });
 });
+
+app.get('/eventos', (req, res) => {
+    res.send(eventos)
+})
+
 
 // Inicializa o servidor para escutar requisições ativamente na porta 10000
 app.listen(10000, () => {
