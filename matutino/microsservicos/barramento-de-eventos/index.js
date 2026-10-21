@@ -11,40 +11,49 @@ app.post('/eventos', async (req, res) => {
   eventos.push(evento)
   console.log(evento)
   //enviar o evento para o mss de lembretes POST /eventos
-  try{
-    await axios.post('http://localhost:4000/eventos', evento) //resulta em promise
+  try {
+    // Para comunicação entre hosts no docker, use o host.docker.internal. Para comunicação entre containers, use o nome do container.
+    // await axios.post('http://localhost:4000/eventos', evento) //resulta em promise
+    await axios.post('http://host.docker.internal:4000/eventos', evento) //resulta em promise
   }
-  catch(e){
+  catch (e) {
     console.log(e)
   }
-  try{
+  try {
+    // Para comunicação entre hosts no docker, use o host.docker.internal. Para comunicação entre containers, use o nome do container.
+    // await axios.post('http://localhost:5000/eventos', evento) //resulta em promise
     //enviar o evento para o mss de observações POST /eventos
-    await axios.post('http://localhost:5000/eventos', evento)
+    await axios.post('http://host.docker.internal:5000/eventos', evento)
   }
-  catch(e){
+  catch (e) {
     console.log(e)
-  } 
+  }
 
-  try{
+  try {
     //enviar o evento para o mss de consultas POST /eventos
-    await axios.post('http://localhost:6000/eventos', evento)
+    // Para comunicação entre hosts no docker, use o host.docker.internal. Para comunicação entre containers, use o nome do container.
+    // await axios.post('http://localhost:6000/eventos', evento) //resulta em promise
+    await axios.post('http://host.docker.internal:6000/eventos', evento)
   }
-  catch(e){
+  catch (e) {
     console.log(e)
-  } 
+  }
 
-  try{
+  try {
     //enviar o evento para o mss de consultas POST /eventos
-    await axios.post('http://localhost:7000/eventos', evento)
+        // Para comunicação entre hosts no docker, use o host.docker.internal. Para comunicação entre containers, use o nome do container.
+    // await axios.post('http://localhost:7000/eventos', evento) //resulta em promise
+
+    await axios.post('http://host.docker.internal:7000/eventos', evento)
   }
-  catch(e){
+  catch (e) {
     console.log(e)
-  } 
-  
+  }
+
 
 
   //responder com um 200 OK ao terminar
-  res.status(200).json({mensagem: 'ok'})
+  res.status(200).json({ mensagem: 'ok' })
 })
 
 //fazer o endpoint que viabiliza o passo 7 da figura
@@ -53,4 +62,4 @@ app.get('/eventos', (req, res) => {
 })
 
 const port = 10000
-app.listen(port, () => {console.log(`Barramento de eventos. Porta ${port}.`)})
+app.listen(port, () => { console.log(`Barramento de eventos. Porta ${port}.`) })
