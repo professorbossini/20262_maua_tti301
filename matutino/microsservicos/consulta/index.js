@@ -44,13 +44,15 @@ app.post("/eventos", (req, res) => {
 
 app.listen(6000, async () => {
     console.log("Servidor de consulta ouvindo na porta 6000.");
-    const eventos = await axios.get('http://localhost:10000/eventos')
+    // Para comunicação entre hosts no docker, use o host.docker.internal. Para comunicação entre containers, use o nome do container.
+    const eventos = await axios.get('http://host.docker.internal:10000/eventos')
+//    const eventos = await axios.get('http://localhost:10000/eventos')
 
     eventos.data.forEach((evento, indice, colecao) => {
-        try{
+        try {
             funcoes[evento.tipo](evento.dados)
         }
-        catch(err){}    
+        catch (err) { }
     })
 });
 

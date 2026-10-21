@@ -19,7 +19,9 @@ app.post('/lembretes', async (req, res) => {
   lembretes[contador] = {
     contador, texto
   }
-  await axios.post('http://localhost:10000/eventos', {
+  // Para comunicação entre hosts no docker, use o host.docker.internal. Para comunicação entre containers, use o nome do container.
+  //await axios.post('http://localhost:10000/eventos'
+  await axios.post('http://host.docker.internal:10000/eventos', {
     tipo: 'LembreteCriado',
     dados: {
       contador, texto
