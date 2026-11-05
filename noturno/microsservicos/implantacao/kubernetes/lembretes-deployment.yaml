@@ -1,0 +1,29 @@
+# deployments vem de apps/v1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lembretes-deployment
+spec:
+  # quantas cópias do pod devem ser executadas
+  replicas: 1
+  # Para especificar quais pods pertencem a este deployment, usamos um seletor de rótulos
+  selector:
+    matchLabels:
+      # Rótulo que identifica os pods pertencentes a este deployment
+      app: lembretes
+  # Modelo que vai ser usado para criar os pods
+  template:
+    metadata:
+      labels:
+        # Todos os nossos pods terão este rótulo, para que o deployment possa gerenciá-los
+        app: lembretes
+    # Definições do pod
+    spec:
+      containers:
+        - name: lembretes
+          image: mamazzei/lembretes
+          imagePullPolicy: Never # Se você estiver usando uma imagem local, use "Never". Se estiver usando uma imagem do Docker Hub, use "Always" e pode ser utilizado também o IfNotPresent
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: 1
