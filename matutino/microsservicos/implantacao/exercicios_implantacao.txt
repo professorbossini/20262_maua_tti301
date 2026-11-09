@@ -1,0 +1,2 @@
+- fazer um yaml para pod independente para cada microsservico e para o barramento de eventos
+- fazer um deployment para cada um deles também
