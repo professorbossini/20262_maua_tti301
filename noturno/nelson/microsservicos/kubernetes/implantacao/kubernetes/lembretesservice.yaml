@@ -1,0 +1,109 @@
+
+# Versão da API do Kubernetes utilizada pelo recurso Service
+apiVersion: v1
+
+# Define que estamos criando um Service
+kind: Service
+
+# Informações de identificação do Service
+metadata:
+  name: lembretes-service
+
+# Configurações do Service
+spec:
+
+  # NodePort disponibiliza o serviço em uma porta do nó
+  # O acesso externo depende da rede e da configuração do cluster
+  type: NodePort
+
+  # Seleciona os Pods que receberão as requisições
+  selector:
+
+    # Todos os Pods com o label app: lembretes
+    # poderão receber tráfego deste Service
+    app: lembretes
+
+  # Lista de portas disponibilizadas pelo Service
+  ports:
+
+    # Identificação desta configuração de porta
+    - name: lembretes
+
+      # Protocolo de comunicação utilizado
+      protocol: TCP
+
+      # Porta interna do Service, acessível no cluster
+      port: 4000
+
+      # Porta do contêiner para onde o tráfego será enviado
+      targetPort: 4000
+
+      # Porta externa do nó
+      # Se omitida, o Kubernetes atribui uma automaticamente
+      # nodePort: 30080
+
+
+
+# ==========================================================
+# SERVICE - MICROSSERVIÇO DE LEMBRETES
+# Tipo: ClusterIP
+#
+# Objetivo:
+# Permitir que outros Pods do Kubernetes acessem
+# o microsserviço de Lembretes pela rede interna.
+# ==========================================================
+
+# Separador entre recursos YAML.
+# Necessário quando há outro recurso antes deste
+# no mesmo arquivo.
+# Se este Service estiver sozinho, pode ser removido.
+---
+
+# Versão da API utilizada para criar Services.
+apiVersion: v1
+
+# Define que o recurso criado será um Service.
+kind: Service
+
+# Informações de identificação do Service.
+metadata:
+
+  # Nome exclusivo do Service dentro do namespace.
+  #
+  # É diferente do Service NodePort criado anteriormente,
+  # pois ambos podem existir simultaneamente.
+  name: lembretes-clusterip-service
+
+# Configurações de funcionamento do Service.
+spec:
+
+  # Define quais Pods receberão as requisições.
+  selector:
+
+    # Seleciona todos os Pods que possuem este label.
+    # O label deve estar configurado nos Pods.
+    app: lembretes
+
+  # Tipo de Service.
+  #
+  # ClusterIP é o tipo padrão do Kubernetes.
+  # Permite comunicação interna dentro do cluster.
+  #
+  # Não disponibiliza diretamente uma porta externa.
+  type: ClusterIP
+
+  # Lista das portas disponibilizadas pelo Service.
+  ports:
+
+    # Nome utilizado para identificar esta porta.
+    - name: lembretes
+
+      # Protocolo de comunicação utilizado.
+      protocol: TCP
+
+      # Porta pela qual outros Pods acessam o Service.
+      port: 4000
+
+      # Porta de destino dentro dos Pods selecionados.
+      # A aplicação Node.js deve escutar nessa porta.
+      targetPort: 4000

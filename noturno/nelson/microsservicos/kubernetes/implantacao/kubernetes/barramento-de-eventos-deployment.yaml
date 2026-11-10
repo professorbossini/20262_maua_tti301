@@ -1,0 +1,114 @@
+
+# ==========================================================
+# RECURSO 1: DEPLOYMENT
+# Responsável por criar e gerenciar os Pods do barramento.
+# ==========================================================
+
+# Versão da API utilizada para criar Deployments.
+apiVersion: apps/v1
+
+# Tipo de recurso que será criado no Kubernetes.
+kind: Deployment
+
+# Identificação do Deployment.
+metadata:
+
+  # Nome do Deployment dentro do namespace.
+  name: barramento-de-eventos-deployment
+
+# Configurações do Deployment.
+spec:
+
+  # Quantidade desejada de Pods executando o barramento.
+  # Se um Pod falhar, o Kubernetes tentará substituí-lo.
+  replicas: 1
+
+  # Define quais Pods são gerenciados pelo Deployment.
+  selector:
+
+    # O Deployment identifica os Pods por seus labels.
+    matchLabels:
+      app: barramento-de-eventos
+
+  # Modelo utilizado para criar novos Pods.
+  template:
+
+    # Metadados dos Pods criados pelo Deployment.
+    metadata:
+
+      # Labels atribuídos aos Pods.
+      # Devem corresponder ao matchLabels acima.
+      labels:
+        app: barramento-de-eventos
+
+    # Configurações internas de cada Pod.
+    spec:
+
+      # Lista dos contêineres executados no Pod.
+      containers:
+
+        # Nome do contêiner.
+        - name: barramento-de-eventos
+
+          # Imagem Docker que será utilizada.
+          # Está referenciada no Docker Hub.
+          # Sem tag explícita, utiliza latest.
+          image: profnelsonaguiar/barramento-de-eventos
+
+# ==========================================================
+# SEPARADOR DE DOCUMENTOS YAML
+# Permite definir vários recursos no mesmo arquivo.
+# ==========================================================
+---
+
+# ==========================================================
+# RECURSO 2: SERVICE
+# Permite que outros Pods acessem o barramento de eventos.
+# ==========================================================
+
+# Versão da API utilizada pelo recurso Service.
+apiVersion: v1
+
+# Tipo de recurso Kubernetes.
+kind: Service
+
+# Identificação do Service.
+metadata:
+
+  # Nome pelo qual o serviço será localizado no cluster.
+  name: barramento-de-eventos-service
+
+# Configurações de funcionamento do Service.
+spec:
+
+  # Define quais Pods receberão as requisições.
+  selector:
+
+    # Seleciona Pods com este label.
+    # Deve corresponder ao label definido no Deployment.
+    app: barramento-de-eventos
+
+  # Tipo de Service utilizado.
+  #
+  # ClusterIP disponibiliza o serviço internamente.
+  # Outros Pods podem acessar o barramento pelo nome
+  # barramento-de-eventos-service na porta 10000.
+  #
+  # Não expõe diretamente o serviço fora do cluster.
+  type: ClusterIP
+
+  # Lista de portas disponibilizadas pelo Service.
+  ports:
+
+    # Nome da configuração de porta.
+    - name: barramento-de-eventos
+
+      # Protocolo de transporte.
+      protocol: TCP
+
+      # Porta utilizada pelos clientes do Service.
+      port: 10000
+
+      # Porta do Pod para onde as requisições são enviadas.
+      # A aplicação deve estar escutando nessa porta.
+      targetPort: 10000

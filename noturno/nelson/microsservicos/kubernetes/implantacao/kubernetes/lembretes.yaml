@@ -1,0 +1,54 @@
+
+# Define a versão da API do Kubernetes utilizada.
+# v1 é utilizada para recursos básicos, como Pods.
+apiVersion: v1
+
+# Define o tipo de recurso que será criado.
+# Pod é a menor unidade de execução do Kubernetes.
+kind: Pod
+
+# Contém informações de identificação do recurso.
+metadata:
+
+  # Nome que será atribuído ao Pod.
+  # Poderemos consultá-lo usando: kubectl get pod lembretes
+  name: lembretes
+
+# Define como o Pod deverá funcionar.
+spec:
+
+  # Lista os contêineres que serão executados no Pod.
+  # Um Pod pode conter um ou mais contêineres.
+  containers:
+
+    # O hífen indica um item da lista de contêineres.
+    # Define o nome interno do contêiner.
+    - name: lembretes
+
+      # Imagem Docker utilizada para criar o contêiner.
+      # profnelsonaguiar: usuário do Docker Hub.
+      # lembretes: nome da imagem.
+      # 0.0.1: versão da imagem.
+      image: profnelsonaguiar/lembretes:0.0.1
+
+      # Define a política de obtenção da imagem.
+      # IfNotPresent utiliza a imagem local do nó,
+      # caso ela já esteja disponível.
+      # Caso contrário, tenta baixá-la do registro.
+      imagePullPolicy: IfNotPresent
+
+      # Define os recursos computacionais do contêiner.
+      resources:
+
+        # Estabelece os limites máximos de utilização.
+        limits:
+
+          # Limita o uso de memória a 256 MiB.
+          # Se ultrapassar o limite, o contêiner
+          # poderá ser encerrado por falta de memória.
+          memory: 256Mi
+
+          # Limita o processamento a 1 CPU.
+          # O Kubernetes pode restringir o consumo
+          # quando o contêiner atingir esse limite.
+          cpu: "1"

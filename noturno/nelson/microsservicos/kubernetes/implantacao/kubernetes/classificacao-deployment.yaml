@@ -1,0 +1,64 @@
+
+# ==========================================================
+# MICROSSERVIÇO DE CLASSIFICAÇÃO (porta 7000)
+#
+# Este arquivo cria 2 recursos:
+#   1. Deployment  -> mantém o Pod de Classificação rodando
+#   2. Service ClusterIP -> acesso interno (Barramento -> Classificação)
+#
+# Não há NodePort: Classificação só conversa com o Barramento,
+# ninguém de fora do cluster precisa acessá-lo.
+#
+# Aplicar com:
+#   kubectl apply -f classificacao-deployment.yaml
+# ==========================================================
+
+# ==========================================================
+# RECURSO 1: DEPLOYMENT
+# ==========================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classificacao-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: classificacao
+  template:
+    metadata:
+      # Deve coincidir com matchLabels e com o selector do Service.
+      labels:
+        app: classificacao
+    spec:
+      containers:
+        - name: classificacao
+          # Imagem publicada no Docker Hub (sem tag = latest).
+          image: profnelsonaguiar/classificacao
+          # Sempre baixa a versão mais recente da imagem.
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: "1"
+
+# ==========================================================
+# RECURSO 2: SERVICE CLUSTERIP (comunicação interna)
+# O Barramento envia eventos para:
+#   http://classificacao-clusterip-service:7000/eventos
+# ==========================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # ESTE NOME precisa ser igual ao usado no index.js do Barramento.
+  name: classificacao-clusterip-service
+spec:
+  selector:
+    app: classificacao
+  type: ClusterIP
+  ports:
+    - name: classificacao
+      protocol: TCP
+      port: 7000
+      targetPort: 7000

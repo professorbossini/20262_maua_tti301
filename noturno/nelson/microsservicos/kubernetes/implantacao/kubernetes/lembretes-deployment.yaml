@@ -1,0 +1,99 @@
+
+# Define a versão da API do Kubernetes utilizada.
+# Deployments pertencem ao grupo "apps" e utilizam a versão "v1".
+apiVersion: apps/v1
+
+# Especifica o tipo de recurso que será criado.
+# Um Deployment gerencia Pods, permitindo controlar réplicas,
+# atualizar aplicações e recriar Pods quando necessário.
+kind: Deployment
+
+# Contém as informações de identificação do Deployment.
+metadata:
+
+  # Nome do Deployment dentro do namespace Kubernetes.
+  # Esse nome será utilizado nos comandos kubectl.
+  # Exemplo: kubectl get deployment lembretes-deployment
+  name: lembretes-deployment
+
+# Define o estado desejado do Deployment.
+spec:
+
+  # Quantidade de Pods que o Kubernetes deve manter.
+  # Se um Pod falhar ou for excluído, o Deployment
+  # providenciará a criação de outro para manter
+  # a quantidade desejada.
+  replicas: 1
+
+  # Define como o Deployment identifica os Pods
+  # que pertencem a ele.
+  selector:
+
+    # Seleciona Pods que possuem os rótulos informados.
+    # Neste exemplo, app deve ser igual a "lembretes".
+    matchLabels:
+      app: lembretes
+
+  # Define o modelo utilizado para criar novos Pods.
+  # Todos os Pods gerenciados por este Deployment
+  # serão criados a partir desta configuração.
+  template:
+
+    # Metadados que serão aplicados aos Pods.
+    metadata:
+
+      # Rótulos utilizados para identificar e organizar Pods.
+      # O rótulo precisa corresponder ao matchLabels
+      # definido anteriormente no selector.
+      labels:
+        app: lembretes
+
+    # Configuração dos Pods que serão criados.
+    spec:
+
+      # Lista de contêineres executados em cada Pod.
+      # Um Pod pode possuir um ou mais contêineres.
+      containers:
+
+        # Nome do contêiner dentro do Pod.
+        - name: lembretes
+
+          # Imagem Docker utilizada para iniciar o contêiner.
+          # profnelsonaguiar: usuário do Docker Hub.
+          # lembretes: nome da imagem.
+          # 0.0.1: versão da aplicação.
+          image: profnelsonaguiar/lembretes
+
+          # Política de obtenção da imagem Docker.
+          # IfNotPresent:
+          # - Usa a imagem local, caso exista no nó.
+          # - Caso contrário, tenta baixá-la do registro.
+          #
+          # É útil quando carregamos uma imagem no Minikube
+          # utilizando o comando "minikube image load".
+          #
+          # ALTERAÇÃO: trocado de IfNotPresent para Always.
+          # Como a imagem não tem tag (usa "latest"), com
+          # IfNotPresent o Kubernetes reaproveitaria a imagem
+          # antiga já baixada e NÃO pegaria o código novo após
+          # um "docker push". Com Always, cada Pod novo baixa
+          # a versão mais recente do Docker Hub.
+          imagePullPolicy: Always
+
+          # Define os recursos computacionais do contêiner.
+          resources:
+
+            # Limites máximos de recursos permitidos.
+            # Esses limites ajudam a evitar que um contêiner
+            # consuma recursos excessivos do nó.
+            limits:
+
+              # Limite máximo de memória: 256 MiB.
+              # Se o contêiner ultrapassar esse limite,
+              # poderá ser encerrado por falta de memória.
+              memory: 256Mi
+
+              # Limite máximo de processamento: 1 CPU.
+              # O Kubernetes pode limitar o tempo de CPU
+              # utilizado pelo contêiner quando necessário.
+              cpu: "1"

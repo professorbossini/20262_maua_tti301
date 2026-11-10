@@ -1,0 +1,97 @@
+
+# ==========================================================
+# MICROSSERVIÇO DE OBSERVAÇÕES (porta 5000)
+#
+# Este arquivo cria 3 recursos:
+#   1. Deployment  -> mantém o Pod de Observações rodando
+#   2. Service ClusterIP -> acesso interno (Barramento -> Observações)
+#   3. Service NodePort  -> acesso externo (Postman/navegador -> Observações)
+#
+# Aplicar com:
+#   kubectl apply -f observacoes-deployment.yaml
+# ==========================================================
+
+# ==========================================================
+# RECURSO 1: DEPLOYMENT
+# ==========================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Nome do Deployment (usado em: kubectl rollout restart deployment ...)
+  name: observacoes-deployment
+spec:
+  # Quantidade de Pods. Mantenha 1: os dados ficam em memória,
+  # e com 2 réplicas cada Pod teria uma base diferente.
+  replicas: 1
+  selector:
+    # O Deployment gerencia os Pods com este label.
+    matchLabels:
+      app: observacoes
+  template:
+    metadata:
+      # Label aplicado aos Pods. Deve ser igual ao matchLabels
+      # e ao selector dos Services abaixo.
+      labels:
+        app: observacoes
+    spec:
+      containers:
+        - name: observacoes
+          # Imagem publicada no Docker Hub (sem tag = latest).
+          image: profnelsonaguiar/observacoes
+          # Always: sempre baixa a imagem ao criar o Pod.
+          # Assim, após "docker push", um
+          # "kubectl rollout restart" já usa a versão nova.
+          imagePullPolicy: Always
+          # Limites de recursos do contêiner.
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: "1"
+
+# ==========================================================
+# RECURSO 2: SERVICE CLUSTERIP (comunicação interna)
+# O Barramento envia eventos para:
+#   http://observacoes-clusterip-service:5000/eventos
+# ==========================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # ESTE NOME precisa ser igual ao usado no index.js do Barramento.
+  name: observacoes-clusterip-service
+spec:
+  # Envia o tráfego para os Pods com label app: observacoes.
+  selector:
+    app: observacoes
+  # ClusterIP: visível apenas dentro do cluster.
+  type: ClusterIP
+  ports:
+    - name: observacoes
+      protocol: TCP
+      # Porta do Service (usada pelos outros Pods).
+      port: 5000
+      # Porta em que o Node.js escuta dentro do contêiner.
+      targetPort: 5000
+
+# ==========================================================
+# RECURSO 3: SERVICE NODEPORT (acesso externo para testes)
+# Permite cadastrar observações a partir do seu computador:
+#   PUT http://localhost:<nodePort>/lembretes/1/observacoes
+# Descubra a porta com: kubectl get svc observacoes-service
+# ==========================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: observacoes-service
+spec:
+  type: NodePort
+  selector:
+    app: observacoes
+  ports:
+    - name: observacoes
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+      # Se omitido, o Kubernetes escolhe uma porta entre 30000-32767.
+      # nodePort: 30050

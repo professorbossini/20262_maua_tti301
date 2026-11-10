@@ -1,0 +1,84 @@
+
+# ==========================================================
+# MICROSSERVIÇO DE CONSULTAS (porta 6000)
+#
+# Este arquivo cria 3 recursos:
+#   1. Deployment  -> mantém o Pod de Consultas rodando
+#   2. Service ClusterIP -> acesso interno (Barramento -> Consultas)
+#   3. Service NodePort  -> acesso externo (GET /lembretes consolidado)
+#
+# Aplicar com:
+#   kubectl apply -f consultas-deployment.yaml
+# ==========================================================
+
+# ==========================================================
+# RECURSO 1: DEPLOYMENT
+# ==========================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consultas-deployment
+spec:
+  # 1 réplica: a base consolidada fica em memória.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consultas
+  template:
+    metadata:
+      # Deve coincidir com matchLabels e com o selector dos Services.
+      labels:
+        app: consultas
+    spec:
+      containers:
+        - name: consultas
+          # Imagem publicada no Docker Hub (sem tag = latest).
+          image: profnelsonaguiar/consultas
+          # Sempre baixa a versão mais recente da imagem.
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: "1"
+
+# ==========================================================
+# RECURSO 2: SERVICE CLUSTERIP (comunicação interna)
+# O Barramento envia eventos para:
+#   http://consultas-clusterip-service:6000/eventos
+# ==========================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # ESTE NOME precisa ser igual ao usado no index.js do Barramento.
+  name: consultas-clusterip-service
+spec:
+  selector:
+    app: consultas
+  type: ClusterIP
+  ports:
+    - name: consultas
+      protocol: TCP
+      port: 6000
+      targetPort: 6000
+
+# ==========================================================
+# RECURSO 3: SERVICE NODEPORT (acesso externo para testes)
+#   GET http://localhost:<nodePort>/lembretes
+# Descubra a porta com: kubectl get svc consultas-service
+# ==========================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consultas-service
+spec:
+  type: NodePort
+  selector:
+    app: consultas
+  ports:
+    - name: consultas
+      protocol: TCP
+      port: 6000
+      targetPort: 6000
+      # nodePort: 30060
