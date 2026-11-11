@@ -21,7 +21,8 @@ app.post('/lembretes', async (req, res) => {
   }
   // Para comunicação entre hosts no docker, use o host.docker.internal. Para comunicação entre containers, use o nome do container.
   //await axios.post('http://localhost:10000/eventos'
-  await axios.post('http://host.docker.internal:10000/eventos', {
+  //await axios.post('http://host.docker.internal:10000/eventos', {
+  await axios.post('http://barramento-de-eventos-service:10000/eventos', {
     tipo: 'LembreteCriado',
     dados: {
       contador, texto
@@ -38,5 +39,7 @@ app.post("/eventos", (req, res) => {
 
 const port = 4000
 app.listen(port, () => {
+  console.log("Nova versão")
+  console.log("Agora usando o Docker Hub");
   console.log(`Lembretes. ${port}`)
 })
