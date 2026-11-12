@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consulta-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consulta
+  template:
+    metadata:
+      labels:
+        app: consulta
+    spec:
+      containers:
+        - name: consulta
+          image: mamazzei/consulta
+          ports:
+            - containerPort: 6000
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: 500m

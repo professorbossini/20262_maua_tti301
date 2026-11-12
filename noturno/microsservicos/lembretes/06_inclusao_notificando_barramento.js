@@ -38,7 +38,7 @@ app.post("/lembretes", async (req, res) => {
     };
 
     lembretes[contador] = lembrete;
-    await axios.post("http://localhost:10000/eventos", {
+    await axios.post("http://barramento-de-eventos-service:10000/eventos", {
         tipo: "LembreteCriado",
         dados: {
             contador,
@@ -68,7 +68,7 @@ app.post("/eventos", (req, res) => {
 
 
 app.listen(PORTA, () => {
-    console.log("Nova versão");
+    console.log("Nova versão - 3");
     console.log("Agora usando o Docker Hub");
     console.log(`Servidor de lembretes ouvindo na porta ${PORTA}.`);
 });

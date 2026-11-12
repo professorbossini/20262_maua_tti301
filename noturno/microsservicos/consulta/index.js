@@ -39,14 +39,33 @@ app.post("/eventos", (req, res) => {
 });
 
 
+// No Kubernetes não há ordem garantida de subida dos pods. Se a consulta subir antes do
+// barramento, o axios.get rejeita, o processo cai (nodemon: "app crashed") e o pod continua
+// Running sem funcionar — o Kubernetes não o reinicia, pois o contêiner não terminou.
+// Por isso a recuperação inicial dos eventos usa o Service ClusterIP do barramento e tenta de novo.
+const sincronizarComBarramento = async (tentativa = 1) => {
+    const maxTentativas = 20;
+    try {
+        // const resp = await axios.get("http://localhost:10000/eventos"); // versão anterior
+        const resp = await
+            axios.get("http://barramento-de-eventos-service:10000/eventos");
+        //axios entrega os dados na propriedade data
+        resp.data.forEach((valor, indice, colecao) => {
+            try {
+                funcoes[valor.tipo](valor.dados);
+            } catch (err) { }
+        });
+        console.log(`Consulta sincronizada com o barramento: ${resp.data.length} evento(s).`);
+    } catch (err) {
+        console.log(`Barramento indisponível (tentativa ${tentativa}/${maxTentativas}): ${err.message}`);
+        if (tentativa < maxTentativas)
+            setTimeout(() => sincronizarComBarramento(tentativa + 1), 3000);
+    }
+};
+
+
+
 app.listen(PORTA, async () => {
     console.log(`Servidor de consulta ouvindo na porta ${PORTA}.`);
-    const resp = await
-        axios.get("http://localhost:10000/eventos");
-    //axios entrega os dados na propriedade data
-    resp.data.forEach((valor, indice, colecao) => {
-        try {
-            funcoes[valor.tipo](valor.dados);
-        } catch (err) { }
-    });
+    await sincronizarComBarramento();
 });

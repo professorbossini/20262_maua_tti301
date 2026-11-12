@@ -12,10 +12,10 @@ app.post('/eventos', (req, res) => {
     const evento = req.body;
     eventos.push(evento);
 
-    axios.post('http://localhost:4000/eventos', evento);
-    axios.post('http://localhost:5000/eventos', evento);
-    axios.post('http://localhost:6000/eventos', evento);
-    axios.post('http://localhost:7000/eventos', evento);
+    axios.post('http://lembretes-service:4000/eventos', evento);
+    axios.post('http://observacoes-service:5000/eventos', evento);
+    axios.post('http://consulta-service:6000/eventos', evento);
+    axios.post('http://classificacao-service:7000/eventos', evento);
     console.log('Evento recebido:', evento.tipo);
     res.status(200).send({ msg: 'ok' });
 });
